@@ -1,0 +1,18 @@
+if (mod_version == null) 
+    throw new GradleException("NullpointerException: `mod_version` not found")
+
+version = mod_version
+//!\ edit this line to match your identity (its defined for JTorLeon Studios) 
+group = "com.jtorleonstudios.${project.name.toLowerCase().replaceAll("\\.", "_")}"
+archivesBaseName = "${project.name}-${version}" 
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+}
+
+println(
+ """|Group: ${group}
+    |Mod: ${archivesBaseName}
+    |Java: ${System.getProperty('java.version')} , JVM: ${System.getProperty('java.vm.version')} (${System.getProperty('java.vendor')}) , Arch: ${System.getProperty('os.arch')}
+    |""".stripMargin()
+)

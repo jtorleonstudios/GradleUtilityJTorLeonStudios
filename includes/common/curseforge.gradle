@@ -1,0 +1,27 @@
+// check properties required
+if (curseforge_api == null) 
+    throw new GradleException("NullpointerException: `properties.curseforge_api` not found")
+
+// Process
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { 
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies { 
+        classpath group: "gradle.plugin.com.matthewprenger", name: "CurseGradle", version: "1.4.0" 
+    }
+}
+
+apply plugin: com.matthewprenger.cursegradle.CurseGradlePlugin
+
+curseforge {
+    apiKey = curseforge_api
+    project {
+        id = "532730"
+        changelog = "Changes" // A file can also be set using: changelog = file("changelog.txt")
+        releaseType = "beta"
+    }
+}

@@ -1,0 +1,23 @@
+if (minecraft_version == null) 
+    throw new GradleException("NullpointerException: `minecraft_version` not found")
+if (version == null) 
+    throw new GradleException("NullpointerException: `version` not found")
+
+//!\ edit this line to match your identity (its defined for JTorLeon Studios)
+def VENDOR = "JTorLeon Studios"
+
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": project.name,
+            "Specification-Vendor": "${VENDOR}",
+            "Specification-Version": "${version}",
+            "Implementation-Title": project.name,
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor" :"${VENDOR}",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "Timestampe": System.currentTimeMillis(),
+            "Build-On-Minecraft": minecraft_version
+        ])
+    }
+}

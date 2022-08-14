@@ -1,0 +1,25 @@
+// W A R N I N G : READ THIS NOTE !
+//
+// note: the logic of this script is based on a specific folder structure! 
+// If you use this script, you must disable this part, or modify your folder structure for this script to work.
+//
+// folder structure for the project "ExampleMod"
+// - - - - - - - - -
+// |- ExampleMod                    (parent project)
+// |   |
+// |   |- ExampleMod-fabric-1.16.5  (java project)
+// |   |   |-> build.gradle
+// |   |   |-> etc...
+// |   |   
+// |   |- ExampleMod-forge-1.16.5   (java project)
+// |   |   |-> etc...
+// |   |   
+// |   |-> icon.png     (/!\ required for this script)
+// |   |-> license.png  (/!\ required for this script)
+// |   |-> mod.properties
+// .   .
+// .   .
+
+processResources {
+
+}

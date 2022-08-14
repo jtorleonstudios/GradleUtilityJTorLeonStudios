@@ -1,0 +1,14 @@
+def LOCAL_DIR = "C:/Users/dev/mcmod";
+
+// load local properties 
+Properties properties = new Properties()
+properties.load(project.rootProject.file("${LOCAL_DIR}/gradle/local.properties").newDataInputStream())
+properties.forEach((k,v) -> project.ext.set(k,v))
+
+apply from: "${LOCAL_DIR}/gradle/includes/common/setupMod.gradle"
+apply from: "${LOCAL_DIR}/gradle/includes/common/publishLocalMaven.gradle"
+apply from: "${LOCAL_DIR}/gradle/includes/common/manifest.gradle"
+apply from: "${LOCAL_DIR}/gradle/includes/common/cursemaven.gradle"
+apply from: "${LOCAL_DIR}/gradle/includes/common/minifyJson.gradle"
+apply from: "${LOCAL_DIR}/gradle/includes/common/curseforge.gradle"
+apply from: "${LOCAL_DIR}/gradle/includes/common/resourceFromParent.gradle"

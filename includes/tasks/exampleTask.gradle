@@ -1,0 +1,7 @@
+tasks.register('exampleTaskName') {
+    description = "example description"
+    doLast {
+        String someString = 'mY_nAmE'
+        println "success" 
+    }
+}
