@@ -4,7 +4,7 @@
   "description": "prepare this workspace after new install (this)",
   "main": "index.js",
   "scripts": {
-    "build": "ts-node node/main.ts"
+    "postinstall": "ts-node node/main.ts"
   },
   "keywords": [
     "gradle",

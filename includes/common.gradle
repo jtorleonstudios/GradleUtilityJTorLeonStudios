@@ -1,14 +1,23 @@
-def LOCAL_DIR = "C:/Users/dev/mcmod";
+//|--GENERATED--|//
+String PATH_PROJECT = "C:/Users/Dev/mcmod/gradle"
+String PATH_TASKS = "C:/Users/Dev/mcmod/gradle/includes/tasks"
+String PATH_FABRIC = "C:/Users/Dev/mcmod/gradle/includes/fabric"
+String PATH_FORGE = "C:/Users/Dev/mcmod/gradle/includes/forge"
+// String PATH_QUILT = "C:/Users/Dev/mcmod/gradle/includes/quilt"
+String PATH_COMMON = "C:/Users/Dev/mcmod/gradle/includes/common"
+
+//|-------------|//
+// Don't edit before this line, update with `npm run postinstall`
 
 // load local properties 
 Properties properties = new Properties()
-properties.load(project.rootProject.file("${LOCAL_DIR}/gradle/local.properties").newDataInputStream())
+properties.load(project.rootProject.file("${PATH_PROJECT}/local.properties").newDataInputStream())
 properties.forEach((k,v) -> project.ext.set(k,v))
 
-apply from: "${LOCAL_DIR}/gradle/includes/common/setupMod.gradle"
-apply from: "${LOCAL_DIR}/gradle/includes/common/publishLocalMaven.gradle"
-apply from: "${LOCAL_DIR}/gradle/includes/common/manifest.gradle"
-apply from: "${LOCAL_DIR}/gradle/includes/common/cursemaven.gradle"
-apply from: "${LOCAL_DIR}/gradle/includes/common/minifyJson.gradle"
-apply from: "${LOCAL_DIR}/gradle/includes/common/curseforge.gradle"
-apply from: "${LOCAL_DIR}/gradle/includes/common/resourceFromParent.gradle"
+apply from: "${PATH_COMMON}/setupMod.gradle"
+apply from: "${PATH_COMMON}/publishLocalMaven.gradle"
+apply from: "${PATH_COMMON}/manifest.gradle"
+apply from: "${PATH_COMMON}/cursemaven.gradle"
+apply from: "${PATH_COMMON}/minifyJson.gradle"
+apply from: "${PATH_COMMON}/curseforge.gradle"
+apply from: "${PATH_COMMON}/resourceFromParent.gradle"

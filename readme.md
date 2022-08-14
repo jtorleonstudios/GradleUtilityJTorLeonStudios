@@ -1,6 +1,10 @@
 # Gradle utility for Minecraft development
 
-Run `npm run build` after getting the project to configure the utility scripts, because the project uses hard-coded file/folder paths. 
+Scalable gradle script collection for minecraft mod development
+
+Run `npm run postinstall` after getting the project to configure the utility scripts, because the project uses hard-coded file/folder paths. 
+
+Use `apply from: "path"` to use a include script, or point directly to the `includes/common.gradle` file
 
 # License MIT
 
