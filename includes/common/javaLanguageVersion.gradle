@@ -1,0 +1,10 @@
+java {
+    if (minecraft_version.contains("1.19") || minecraft_version.contains("1.18"))
+        toolchain.languageVersion = JavaLanguageVersion.of(17)
+    else if (minecraft_version.contains("1.17"))
+        toolchain.languageVersion = JavaLanguageVersion.of(16)
+    else if (minecraft_version.contains("1.16"))
+        toolchain.languageVersion = JavaLanguageVersion.of(8)
+    else
+        toolchain.languageVersion = JavaLanguageVersion.of(8)
+}

@@ -9,15 +9,27 @@ String PATH_COMMON = "C:/Users/Dev/mcmod/gradle/includes/common"
 //|-------------|//
 // Don't edit before this line, update with `npm run postinstall`
 
+if (!new File("${PATH_PROJECT}/local.properties").exists())
+    throw new GradleException("FileNotFound: `${PATH_PROJECT}/local.properties` not found (parent folder)")
+if (!new File("../mod.properties").exists())
+    throw new GradleException("FileNotFound: `../mod.properties` not found (parent folder)")
+
 // load local properties 
 Properties properties = new Properties()
 properties.load(project.rootProject.file("${PATH_PROJECT}/local.properties").newDataInputStream())
 properties.forEach((k,v) -> project.ext.set(k,v))
 
+// load mod properties 
+properties = new Properties()
+properties.load(project.rootProject.file("../mod.properties").newDataInputStream())
+properties.forEach((k,v) -> project.ext.set(k,v))
+
+// Apply module
 apply from: "${PATH_COMMON}/setupMod.gradle"
+apply from: "${PATH_COMMON}/javaLanguageVersion.gradle"
 apply from: "${PATH_COMMON}/publishLocalMaven.gradle"
 apply from: "${PATH_COMMON}/manifest.gradle"
-apply from: "${PATH_COMMON}/cursemaven.gradle"
-apply from: "${PATH_COMMON}/minifyJson.gradle"
-apply from: "${PATH_COMMON}/curseforge.gradle"
+apply from: "${PATH_COMMON}/cursemaven.gradle" 
 apply from: "${PATH_COMMON}/resourceFromParent.gradle"
+//apply from: "${PATH_COMMON}/curseforge.gradle"
+ 

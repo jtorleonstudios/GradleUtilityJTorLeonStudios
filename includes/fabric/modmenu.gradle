@@ -1,0 +1,21 @@
+if (minecraft_version == null) 
+    throw new GradleException("NullpointerException: `minecraft_version` not found")
+
+dependencies {
+    if (minecraft_version.contains("1.19.2"))
+        modImplementation "curse.maven:modmenu-308702:3920481"
+    else if (minecraft_version.contains("1.19.1"))
+        modImplementation "curse.maven:modmenu-308702:3902967"
+    else if (minecraft_version.contains("1.19"))
+        modImplementation "curse.maven:modmenu-308702:3873988"
+    else if (minecraft_version.contains("1.18.2"))
+        modImplementation "curse.maven:modmenu-308702:3850113"
+    else if (minecraft_version.contains("1.18.1"))
+        modImplementation "curse.maven:modmenu-308702:3570652"
+    else if (minecraft_version.contains("1.17.1"))
+        modImplementation "curse.maven:modmenu-308702:3850095"
+    else if (minecraft_version.contains("1.16.5"))
+        modImplementation "curse.maven:modmenu-308702:3850092"
+    else
+        System.out.println("not catch modmenu modImplementation")
+}

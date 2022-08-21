@@ -2,9 +2,9 @@
   "name": "utility-gradle-minecraft-mod",
   "version": "1.0.0",
   "description": "prepare this workspace after new install (this)",
-  "main": "index.js",
+  "main": "console.log(\"not implemented\")",
   "scripts": {
-    "postinstall": "ts-node node/main.ts"
+    "postinstall": "ts-node node/postinstall.ts"
   },
   "keywords": [
     "gradle",

@@ -15,11 +15,43 @@
 // |   |   |-> etc...
 // |   |   
 // |   |-> icon.png     (/!\ required for this script)
-// |   |-> license.png  (/!\ required for this script)
+// |   |-> license      (/!\ required for this script)
+// |   |-> changelog.md      (/!\ required for this script)
 // |   |-> mod.properties
 // .   .
 // .   .
 
+if (mod_id == null) 
+    throw new GradleException("NullpointerException: `mod_id` not found")
+if (version == null) 
+    throw new GradleException("NullpointerException: `version` not found")
+if (mod_description == null) 
+    throw new GradleException("NullpointerException: `mod_description` not found")
+if (curseforge_slug == null) 
+    throw new GradleException("NullpointerException: `curseforge_slug` not found")
+ 
+jar {
+    from("../changelog.md") {}
+	from("../license") { rename { "${it}_${mod_id}.txt"} }
+    from("../icon.png") { if (project.name.contains("fabric")) rename { "assets/${mod_id}/icon.png"} }
+    //!\ don't merge this process, because fabric require a different path 
+    from("../icon.png") { rename { "pack.png"} }
+}
+  
+import groovy.json.JsonParserType
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+import java.util.regex.Pattern
 processResources {
+    def buildProps = project.properties.clone()
+    // transform slug to display name (replace "-" to blanck space
+    buildProps.put("mod_name", curseforge_slug.replaceAll("-", " "))
+ 
+    filesMatching(["META-INF/mods.toml", "pack.mcmeta", "fabric.mod.json", "mcmod.info"]) { expand buildProps }
 
+    doLast {   
+        fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+            it.text = JsonOutput.toJson(new JsonSlurper(type: JsonParserType.LAX).parse(it)) 
+        } 
+    }
 }
