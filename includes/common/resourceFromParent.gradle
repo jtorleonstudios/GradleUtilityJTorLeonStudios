@@ -45,7 +45,7 @@ import java.util.regex.Pattern
 processResources {
     def buildProps = project.properties.clone()
     // transform slug to display name (replace "-" to blanck space
-    buildProps.put("mod_name", curseforge_slug.replaceAll("-", " "))
+    buildProps.put("mod_name", curseforge_slug.substring(0, 1).toUpperCase() + curseforge_slug.substring(1).replaceAll("-", " "))
  
     filesMatching(["META-INF/mods.toml", "pack.mcmeta", "fabric.mod.json", "mcmod.info"]) { expand buildProps }
 

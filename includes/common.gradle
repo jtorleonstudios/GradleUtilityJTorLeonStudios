@@ -24,12 +24,19 @@ properties = new Properties()
 properties.load(project.rootProject.file("../mod.properties").newDataInputStream())
 properties.forEach((k,v) -> project.ext.set(k,v))
 
+// define loader
+def getLoader = project.name.contains("fabric") ? "fabric" : project.name.contains("forge") ? "forge" : null
+if (getLoader === null) throw new GradleException("loader not detected");
+project.ext.set("loader", getLoader)
+
 // Apply module
+apply from: "${PATH_COMMON}/setupLibraryFerretVersion.gradle"
 apply from: "${PATH_COMMON}/setupMod.gradle"
 apply from: "${PATH_COMMON}/javaLanguageVersion.gradle"
 apply from: "${PATH_COMMON}/publishLocalMaven.gradle"
 apply from: "${PATH_COMMON}/manifest.gradle"
 apply from: "${PATH_COMMON}/cursemaven.gradle" 
 apply from: "${PATH_COMMON}/resourceFromParent.gradle"
-//apply from: "${PATH_COMMON}/curseforge.gradle"
- 
+apply from: "${PATH_COMMON}/curseforge.gradle"
+
+apply from: "${PATH_TASKS}/cleanAndRunClient.gradle"

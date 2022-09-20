@@ -1,7 +1,15 @@
 // check properties required
 if (curseforge_api == null) 
     throw new GradleException("NullpointerException: `properties.curseforge_api` not found")
-
+if (minecraft_version == null) 
+    throw new GradleException("NullpointerException: `minecraft_version` not found")
+if (archivesBaseName == null) 
+    throw new GradleException("NullpointerException: `archivesBaseName` not found")
+if (curseforge_slug == null) 
+    throw new GradleException("NullpointerException: `curseforge_slug` not found")
+if (loader == null) 
+    throw new GradleException("NullpointerException: `loader` not found")
+ 
 // Process
 buildscript {
     repositories {
@@ -18,10 +26,60 @@ buildscript {
 apply plugin: com.matthewprenger.cursegradle.CurseGradlePlugin
 
 curseforge {
+    def isNotFerret = !project.name.contains("ferret")
+ 
     apiKey = curseforge_api
     project {
-        id = "532730"
-        changelog = "Changes" // A file can also be set using: changelog = file("changelog.txt")
-        releaseType = "beta"
+        id = project.property("curseforge_id_${loader}")
+
+        changelog ="""|${isNotFerret ?"""<h2 style="font-size:36px;text-align:center">&#9888;&#65039; <a target="_blank" style="font-size:36px;color:red" href="https://www.curseforge.com/minecraft/mc-mods/library-ferret-${loader}">Require Library ferret ${project.property("ferret_version")}</a> &#9888;&#65039;</h2>""" :"<!-- not requiredl library ferret -->"}
+                      |<p style="text-align:left">
+                      | <a title="Visit Bisechosting" target="_blank" href="https://www.bisecthosting.com/jtlelisa"><img src="https://media.forgecdn.net/attachments/421/58/bisec.png" alt="Bisechosting code: jtlelisa" width="1168" height="155" style="display:block;margin-left:auto;margin-right:auto;" /></a>
+                      |</p>
+                      |<h1>Changelog ${curseforge_slug.substring(0, 1).toUpperCase() + curseforge_slug.substring(1).replaceAll("-", " ")} ${version}</h1>
+                      |<h3>This version is compiled and tested with:</h3>
+                      |<ul>
+                      | <li><strong>Minecraft</strong> ${minecraft_version}</li>
+                      | <li><strong>${loader.substring(0, 1).toUpperCase() + loader.substring(1)}</strong> ${project.property(loader + "_version")}</li>
+                      | ${isNotFerret ? """<li><a target="_blank" href="https://www.curseforge.com/minecraft/mc-mods/library-ferret-${loader}"><strong>Library Ferret</strong></a> ${project.property("ferret_version")}</li></ul>""" : "<!-- not requiredl library ferret -->"}
+                      |</ul>
+                      |
+                      |${file("../changelog.md").getText("UTF-8")}
+                      |""".stripMargin()
+
+        changelogType = "markdown"
+        releaseType = "release"
+
+        // Minecraft version
+        addGameVersion minecraft_version
+        // Loader version (forge|fabric|..)
+        addGameVersion "${loader.substring(0, 1).toUpperCase() + loader.substring(1)}"
+        // Java version
+        addGameVersion "Java ${java.toolchain.languageVersion.get()}"
+
+        mainArtifact(loader.contains("fabric") ? remapJar : jar) {
+            displayName = "${curseforge_slug.substring(0, 1).toUpperCase() + curseforge_slug.substring(1).replaceAll("-", " ")} ${version} - ${loader.substring(0, 1).toUpperCase() + loader.substring(1)} ${minecraft_version}"
+            
+            // add library ferret dependency 
+            if (isNotFerret) relations { requiredDependency "library-ferret-${loader}" }
+        }
+        // only fabric
+        if (loader.contains("fabric")) afterEvaluate { uploadTask.dependsOn(remapJar) }
     }
+    options {
+        debug = false // defaults to false
+        forgeGradleIntegration = !loader.contains("fabric") // disable for fabric
+    }
+}
+
+tasks.getByName("curseforge").doLast {
+    def fileID = (tasks.getByName("curseforge${project.property("curseforge_id_${loader}")}").property("mainArtifact"))['fileID']
+    def curseforgeDownloadLink = "https://www.curseforge.com/minecraft/mc-mods/${curseforge_slug}-${loader}/files/${fileID}";
+    def lastRelease = file("gradle/lastRelease.json");
+    if (!lastRelease.exists()) lastRelease.createNewFile()
+    lastRelease.write("""|{
+                         |  "fileId": "${fileID}",
+                         |  "slug": "${curseforgeDownloadLink}"
+                         |}
+                         |""".stripMargin())
 }

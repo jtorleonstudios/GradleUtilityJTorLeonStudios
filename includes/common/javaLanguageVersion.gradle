@@ -1,3 +1,6 @@
+if (minecraft_version == null) 
+    throw new GradleException("NullpointerException: `minecraft_version` not found")
+
 java {
     if (minecraft_version.contains("1.19") || minecraft_version.contains("1.18"))
         toolchain.languageVersion = JavaLanguageVersion.of(17)
