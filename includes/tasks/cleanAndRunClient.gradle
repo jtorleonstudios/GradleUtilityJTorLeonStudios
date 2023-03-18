@@ -5,4 +5,4 @@ task cleanAndRun(type: Delete) {
   description = "Clean run folder and runClient (excepted run/mods/**)"
   delete stream(file("run").listFiles()).filter(v -> !v.getName().contains("mods")).collect(toList())
 }
-cleanAndRun.finalizedBy runClient
+//cleanAndRun.finalizedBy runClient

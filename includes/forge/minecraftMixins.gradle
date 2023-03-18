@@ -1,0 +1,44 @@
+if (minecraft_version == null) 
+    throw new GradleException("NullpointerException: `minecraft_version` not found")
+
+minecraft {
+    mappings channel: 'official', version: minecraft_version
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            // mixin ------ RENAME MOD ID
+            arg "-mixin.config=disablenewworldscreen.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', file("build/createSrgToMcp/output.srg")
+            // ----- end mixin
+            mods { testMod { source sourceSets.main } }
+        }
+        server {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            // mixin ------ RENAME MOD ID
+            arg "-mixin.config=disablenewworldscreen.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', file("build/createSrgToMcp/output.srg")
+            // ----- end mixin
+            mods { testMod { source sourceSets.main } }
+        }
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'testMod', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            // mixin ------ RENAME MOD ID
+            arg "-mixin.config=disablenewworldscreen.mixins.json"
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', file("build/createSrgToMcp/output.srg")
+            // ----- end mixin
+            mods { testMod { source sourceSets.main } }
+        }
+    }
+}
